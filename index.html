@@ -1,140 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Henry Stickmin: Stealing the Diamond | POWERGAMERZ</title>
-    <style>
-
-        body, html {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            background-color: #000;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-family: 'Courier New', Courier, monospace;
-        }
-
-        /* 2. Splash Screen & Typewriter */
-        #splash-screen {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: #0a0a0a;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            transition: opacity 0.8s ease, visibility 0.8s;
-            color: #00ff00;
-        }
-
-        #typewriter-text {
-            font-size: 24px;
-            font-weight: bold;
-            text-align: center;
-            max-width: 80%;
-            text-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
-        }
-
-        .cursor {
-            display: inline-block;
-            width: 10px;
-            height: 24px;
-            background-color: #00ff00;
-            margin-left: 5px;
-            animation: blink 0.7s infinite;
-            vertical-align: middle;
-        }
-
-        #start-btn {
-            display: none; 
-            margin-top: 30px;
-            padding: 15px 40px;
-            background-color: transparent;
-            color: #00ff00;
-            border: 2px solid #00ff00;
-            font-family: inherit;
-            font-size: 20px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-
-        #start-btn:hover {
-            background-color: #00ff00;
-            color: #000;
-            box-shadow: 0 0 20px rgba(0, 255, 0, 0.8);
-        }
-
-        #flash-container {
-            width: 100vw;
-            height: 100vh;
-            z-index: 1;
-        }
-
-        ruffle-player {
-            width: 100%;
-            height: 100%;
-            display: block;
-        }
-
-        marquee {
-            position: absolute;
-            bottom: 15px;
-            width: 100%;
-            color: white;
-            font-family: Arial, sans-serif;
-            font-size: 16px;
-            text-shadow: 2px 2px 4px #000;
-            z-index: 999;
-            pointer-events: none;
-        }
-
-        marquee a {
-            color: #ff4444;
-            pointer-events: auto;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        #fullscreen-toggle {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            z-index: 999;
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-            border: 1px solid white;
-            padding: 5px 10px;
-            cursor: pointer;
-            font-size: 12px;
-            opacity: 0.5;
-            transition: opacity 0.3s;
-        }
-
-        #fullscreen-toggle:hover { opacity: 1; }
-
-        @keyframes blink { 50% { opacity: 0; } }
-    </style>
-</head>
+<html>
 <body>
-
-    <div id="splash-screen">
+<div id="splash-screen">
         <div id="typewriter-wrap">
             <span id="typewriter-text"></span><span class="cursor"></span>
         </div>
-        <button id="start-btn">START GAME</button>
+        <button id="start-btn">START HEIST</button>
     </div>
+
     <button id="fullscreen-toggle">FULLSCREEN</button>
     <marquee scrollamount="12">
         Created by Ruchir. Subscribe to him <a href="https://youtube.com/@powergamerzalt" target="_blank">here!</a>
@@ -153,32 +25,34 @@
             "GATHERING STICK-FIGURE ASSETS...",
             "LOCATING THE TELEPORTER...",
             "PREPARING THE FAIL SCREENS..."
+            "hi. power here. if you are reading this, ur wasting ur time 🤣"
         ];
+
         const textElement = document.getElementById("typewriter-text");
-        const splash = document.getElementById("splash-screen");
         const startBtn = document.getElementById("start-btn");
-        const fsBtn = document.getElementById("fullscreen-toggle");
+        const splash = document.getElementById("splash-screen");
         
         const randomMessage = messages[Math.floor(Math.random() * messages.length)];
         let charIndex = 0;
-        function typeWriter() {
+
+        function runTypewriter() {
             if (charIndex < randomMessage.length) {
-                textElement.textContent += randomMessage.charAt(charIndex);
+                textElement.innerText += randomMessage.charAt(charIndex);
                 charIndex++;
-                setTimeout(typeWriter, 50);
+                setTimeout(runTypewriter, 50); 
             } else {
                 startBtn.style.display = "block";
             }
         }
 
-        window.addEventListener("load", () => {
-            typeWriter();
+        window.onload = () => {
+            runTypewriter();
+
             const ruffle = window.RufflePlayer.newest();
             const player = ruffle.createPlayer();
-            const container = document.getElementById("flash-container");
-            container.appendChild(player);
+            document.getElementById("flash-container").appendChild(player);
 
-            startBtn.addEventListener("click", () => {
+            startBtn.onclick = () => {
                 splash.style.opacity = '0';
                 setTimeout(() => splash.remove(), 800);
 
@@ -189,15 +63,16 @@
                     allowFullscreen: true,
                     autoplay: "on"
                 });
-            });
-            fsBtn.addEventListener("click", () => {
+            };
+
+            document.getElementById("fullscreen-toggle").onclick = () => {
                 if (!document.fullscreenElement) {
                     document.documentElement.requestFullscreen();
                 } else {
                     document.exitFullscreen();
                 }
-            });
-        });
+            };
+        };
     </script>
 </body>
 </html>
