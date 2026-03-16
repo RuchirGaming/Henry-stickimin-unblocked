@@ -1,15 +1,87 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Henry Stickmin: Stealing the Diamond</title>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: #000 !important;
+            color: #0f0;
+            font-family: 'Courier New', Courier, monospace;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        #splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #0a0a0a;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        #start-btn {
+            display: none;
+            margin-top: 20px;
+            padding: 10px 30px;
+            background: black;
+            color: #0f0;
+            border: 2px solid #0f0;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+
+        #start-btn:hover {
+            background: #0f0;
+            color: black;
+        }
+
+        #flash-container {
+            width: 100%;
+            height: 100%;
+        }
+
+        marquee {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            color: white;
+            z-index: 50;
+        }
+
+        .cursor {
+            animation: blink 0.8s infinite;
+            border-left: 10px solid #0f0;
+            margin-left: 5px;
+        }
+
+        @keyframes blink { 50% { opacity: 0; } }
+    </style>
+</head>
 <body>
-<div id="splash-screen">
-        <div id="typewriter-wrap">
-            <span id="typewriter-text"></span><span class="cursor"></span>
+
+    <div id="splash-screen">
+        <div>
+            <span id="text-output"></span><span class="cursor">&nbsp;</span>
         </div>
-        <button id="start-btn">START HEIST</button>
+        <button id="start-btn" onclick="launchGame()">START HEIST</button>
     </div>
 
-    <button id="fullscreen-toggle">FULLSCREEN</button>
-    <marquee scrollamount="12">
-        Created by Ruchir. Subscribe to him <a href="https://youtube.com/@powergamerzalt" target="_blank">here!</a>
+    <marquee scrollamount="10">
+        Created by Ruchir. Subscribe to him <a href="https://youtube.com/@powergamerzalt" style="color:red;">here!</a>
     </marquee>
 
     <div id="flash-container"></div>
@@ -17,62 +89,44 @@
     <script src="https://unpkg.com/@ruffle-rs/ruffle"></script>
 
     <script>
-        const messages = [
+        const msgs = [
             "INITIALIZING HEIST PROTOCOL...",
-            "CALCULATING PROBABILITY OF FAILURE: 99%...",
-            "BRIBING THE MUSEUM GUARDS...",
             "POLISHING THE TUNISIAN DIAMOND...",
-            "GATHERING STICK-FIGURE ASSETS...",
             "LOCATING THE TELEPORTER...",
             "PREPARING THE FAIL SCREENS..."
-            "hi. power here. if you are reading this, ur wasting ur time 🤣"
         ];
 
-        const textElement = document.getElementById("typewriter-text");
-        const startBtn = document.getElementById("start-btn");
-        const splash = document.getElementById("splash-screen");
-        
-        const randomMessage = messages[Math.floor(Math.random() * messages.length)];
-        let charIndex = 0;
+        const output = document.getElementById("text-output");
+        const btn = document.getElementById("start-btn");
+        const selected = msgs[Math.floor(Math.random() * msgs.length)];
+        let i = 0;
 
-        function runTypewriter() {
-            if (charIndex < randomMessage.length) {
-                textElement.innerText += randomMessage.charAt(charIndex);
-                charIndex++;
-                setTimeout(runTypewriter, 50); 
+        function type() {
+            if (i < selected.length) {
+                output.innerHTML += selected.charAt(i);
+                i++;
+                setTimeout(type, 50);
             } else {
-                startBtn.style.display = "block";
+                btn.style.display = "block";
             }
         }
 
-        window.onload = () => {
-            runTypewriter();
+        type();
+
+        function launchGame() {
+            document.getElementById("splash-screen").style.display = "none";
 
             const ruffle = window.RufflePlayer.newest();
             const player = ruffle.createPlayer();
             document.getElementById("flash-container").appendChild(player);
 
-            startBtn.onclick = () => {
-                splash.style.opacity = '0';
-                setTimeout(() => splash.remove(), 800);
-
-                player.load({
-                    url: "Stealing_the_Diamond.swf",
-                    letterbox: "on",
-                    scale: "showAll",
-                    allowFullscreen: true,
-                    autoplay: "on"
-                });
-            };
-
-            document.getElementById("fullscreen-toggle").onclick = () => {
-                if (!document.fullscreenElement) {
-                    document.documentElement.requestFullscreen();
-                } else {
-                    document.exitFullscreen();
-                }
-            };
-        };
+            player.load({
+                url: "Stealing_the_Diamond.swf",
+                letterbox: "on",
+                scale: "showAll",
+                autoplay: "on"
+            });
+        }
     </script>
 </body>
 </html>
