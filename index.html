@@ -1,71 +1,148 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <title>Henry Stickmin Game, made by POWERGAMERZ</title>
-        <style>
-            body, html {
-                margin: 0;
-                padding: 0;
-                width: 100%;
-                height: 100%;
-                overflow: hidden; 
-                background-color: black; 
-                display: flex;
-                justify-content: center;
-                align-items: center;
-            }
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Henry Stickmin: Stealing the Diamond | POWERGAMERZ</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
 
-            #flash-container {
-                width: 100vw;
-                height: 100vh;
-            }
+        #flash-container {
+            width: 100vw;
+            height: 100vh;
+            z-index: 1;
+        }
 
-            ruffle-player {
-                width: 100%;
-                height: 100%;
-                display: block;
-            }
-            marquee {
-                position: absolute;
-                bottom: 10px;
-                width: 100%;
-                color: white;
-                font-family: Arial, sans-serif;
-                text-shadow: 2px 2px 4px #000;
-                z-index: 999; 
-                pointer-events: none; 
-            }
-            marquee a {
-                color: #ff0000;
-                pointer-events: auto; 
-                text-decoration: none;
-                font-weight: bold;
-            }
-        </style>
-    </head>
-    <body>
+        ruffle-player {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
 
-        <div id="flash-container"></div>
+        #splash-screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #121212;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            transition: opacity 0.8s ease, visibility 0.8s;
+            font-family: 'Courier New', Courier, monospace;
+            color: #00ff00; /* Classic Terminal Green */
+        }
 
-        <marquee scrollamount="25">
-            Created by Ruchir. Subscribe to him <a href="https://youtube.com/@powergamerzalt">here!</a>
-        </marquee>
+        #typewriter-text {
+            font-size: 28px;
+            font-weight: bold;
+            text-shadow: 0 0 8px rgba(0, 255, 0, 0.6);
+        }
 
-        <script src="https://unpkg.com/@ruffle-rs/ruffle"></script>
-        <script>
-            window.RufflePlayer = window.RufflePlayer || {};
-            window.addEventListener("load", (event) => {
-                const ruffle = window.RufflePlayer.newest();
-                const player = ruffle.createPlayer();
-                const container = document.getElementById("flash-container");
-                container.appendChild(player);
-                
-                player.load({
-                    url: "Stealing_the_Diamond.swf",
-                    letterbox: "on",
-                    scale: "showAll"
-                });
+        .cursor {
+            display: inline-block;
+            width: 12px;
+            height: 28px;
+            background-color: #00ff00;
+            margin-left: 8px;
+            animation: blink 0.7s infinite;
+            vertical-align: middle;
+        }
+
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
+
+        marquee {
+            position: absolute;
+            bottom: 15px;
+            width: 100%;
+            color: white;
+            font-family: Arial, sans-serif;
+            font-size: 18px;
+            text-shadow: 2px 2px 4px #000;
+            z-index: 999;
+            pointer-events: none;
+        }
+
+        marquee a {
+            color: #ff4444;
+            pointer-events: auto;
+            text-decoration: none;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="splash-screen">
+        <span id="typewriter-text"></span><span class="cursor"></span>
+    </div>
+
+    <div id="flash-container"></div>
+
+    <marquee scrollamount="27">
+        Created by Ruchir. Subscribe to him <a href="https://youtube.com/@powergamerzalt" target="_blank">here!</a>
+    </marquee>
+
+    <script src="https://unpkg.com/@ruffle-rs/ruffle"></script>
+
+    <script>
+        const messages = [
+            "INITIALIZING HEIST PROTOCOL...",
+            "CALCULATING PROBABILITY OF FAILURE: 99%...",
+            "BRIBING THE MUSEUM GUARDS...",
+            "POLISHING THE TUNISIAN DIAMOND...",
+            "GATHERING STICK-FIGURE ASSETS...",
+            "LOCATING THE TELEPORTER...",
+            "LOADING STEP 1: DON'T GET CAUGHT."
+            "custom message by power gl 💀🙏"
+        ];
+
+        const textElement = document.getElementById("typewriter-text");
+        const splash = document.getElementById("splash-screen");
+        const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+        let charIndex = 0;
+
+        function typeWriter() {
+            if (charIndex < randomMessage.length) {
+                textElement.textContent += randomMessage.charAt(charIndex);
+                charIndex++;
+                setTimeout(typeWriter, 60); 
+            } else {
+                setTimeout(() => {
+                    splash.style.opacity = '0';
+                    splash.style.visibility = 'hidden';
+                }, 1500);
+            }
+        }
+
+        window.addEventListener("load", () => {
+            typeWriter();
+const ruffle = window.RufflePlayer.newest();
+            const player = ruffle.createPlayer();
+            const container = document.getElementById("flash-container");
+            container.appendChild(player);
+
+            player.load({
+                url: "Stealing_the_Diamond.swf",
+                letterbox: "on",
+                scale: "showAll",
+                allowFullscreen: true
             });
-        </script>
-    </body>
+        });
+    </script>
+</body>
 </html>
