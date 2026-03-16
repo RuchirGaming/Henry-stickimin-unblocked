@@ -1,29 +1,56 @@
+<!DOCTYPE html>
 <html>
     <head>
         <title>Henry Stickmin Game, made by POWERGAMERZ</title>
         <style>
-            #flash-container {
-                width: 800px;
-                height: 600px;
-            }
             body, html {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  background-color: black; 
-}
+                margin: 0;
+                padding: 0;
+                width: 100%;
+                height: 100%;
+                overflow: hidden; 
+                background-color: black; 
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
 
-canvas {
-  display: block;
-  width: 100vw;
-  height: 100vh;
-  object-fit: contain; 
+            #flash-container {
+                width: 100vw;
+                height: 100vh;
+            }
+
+            ruffle-player {
+                width: 100%;
+                height: 100%;
+                display: block;
+            }
+            marquee {
+                position: absolute;
+                bottom: 10px;
+                width: 100%;
+                color: white;
+                font-family: Arial, sans-serif;
+                text-shadow: 2px 2px 4px #000;
+                z-index: 999; 
+                pointer-events: none; 
+            }
+            marquee a {
+                color: #ff0000;
+                pointer-events: auto; 
+                text-decoration: none;
+                font-weight: bold;
+            }
         </style>
     </head>
     <body>
+
         <div id="flash-container"></div>
+
+        <marquee scrollamount="25">
+            Created by Ruchir. Subscribe to him <a href="https://youtube.com/@powergamerzalt">here!</a>
+        </marquee>
+
         <script src="https://unpkg.com/@ruffle-rs/ruffle"></script>
         <script>
             window.RufflePlayer = window.RufflePlayer || {};
@@ -32,9 +59,13 @@ canvas {
                 const player = ruffle.createPlayer();
                 const container = document.getElementById("flash-container");
                 container.appendChild(player);
-                player.load("Stealing_the_Diamond.swf");
+                
+                player.load({
+                    url: "Stealing_the_Diamond.swf",
+                    letterbox: "on",
+                    scale: "showAll"
+                });
             });
-      
         </script>
     </body>
 </html>
